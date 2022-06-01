@@ -47,13 +47,13 @@ Find `TODO` in code to implement, you can also change any code in codebase to ma
 
 ![demo](./images/demo.png)
 
-1. The component has a label
-2. The special `Select All` option
-   1. if checked, all other options are checked
-   2. if unchecked, all other options are unchecked
-   3. if all other options are checked, it should be checked
-   4. if any other option are unchecked, it should be unchecked
-3. The options support multiple-columns, and the direction is from top to bottom
+1. The component has a label.
+2. The special `Select All` option.
+   1. if checked, all other options are checked.
+   2. if unchecked, all other options are unchecked.
+   3. if all other options are checked, it should be checked.
+   4. if any other option are unchecked, it should be unchecked.
+3. The options support multiple-columns, and the direction is from top to bottom.
 
 ### Performance requirement
 
