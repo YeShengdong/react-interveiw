@@ -1,6 +1,7 @@
 import './MultiCheck.css';
 
 import React from 'react';
+import { useEffect,useState } from 'react';
 
 export type Option = {
 	label: string;
@@ -27,11 +28,43 @@ type Props = {
 	onChange?: (options: Option[]) => void;
 };
 
-const MultiCheck: React.FunctionComponent<Props> = (): JSX.Element => {
+const MultiCheck: React.FunctionComponent<Props> = (props): JSX.Element => {
 	// @todo
+	const {columns=1,label,onChange,options,values} = props;
+	const [columnLength,setColumnLength] = useState(columns);
+	const [newOption,setOption] = useState(options);
+	const [list,setList] = useState<any[]>([])
+
+	useEffect(()=>{
+		setColumnLength(Math.ceil((options.length+1)/columns))
+		let tempArr = [{label: 'select all', value: '000',},...options]
+		setOption(tempArr)
+	},[columns,options])
+
+	useEffect(()=>{
+			let res = [];
+			for(let i=0;i<columns;i++) {
+				res[i]=newOption.slice(i*columnLength,(i+1)*columnLength)
+			}
+		setList(res)
+	},[columnLength])
 
 	return (
-		<p>MultiCheck</p>
+		<div className="container">
+		<header>Status</header>
+		<div className="wrap">
+			{list.map((innerArray,i)=>{
+				return <div className="columWrap" key={i}>
+					{innerArray.map((item:any,index:number)=>{
+					return <div key={item.label}>
+						<input type="checkbox"/>
+						<label className="checkbox-label">{item.label}</label>
+				 	</div>
+					})}
+				</div>
+			})}
+		</div>
+</div>
 	);
 };
 

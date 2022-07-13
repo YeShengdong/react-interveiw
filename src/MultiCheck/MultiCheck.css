@@ -1,0 +1,18 @@
+.container{
+  max-width:1000px;
+}
+
+header {
+  background:#c3bdbd;
+  padding:10px 0 0 10px; 
+  border-radius:4px;
+}
+.wrap {
+  border:1px solid gray;
+  border-radius:6px;
+  margin-top:10px;
+  display: flex;
+}
+.columWrap {
+  flex:1
+}
