@@ -34,6 +34,7 @@ const MultiCheck: React.FunctionComponent<Props> = (props): JSX.Element => {
 	const [columnLength,setColumnLength] = useState(columns);
 	const [newOption,setOption] = useState(options);
 	const [list,setList] = useState<any[]>([])
+	const [checkedIds,setChecked] = useState<string[]>([])
 
 	useEffect(()=>{
 		setColumnLength(Math.ceil((options.length+1)/columns))
@@ -49,6 +50,35 @@ const MultiCheck: React.FunctionComponent<Props> = (props): JSX.Element => {
 		setList(res)
 	},[columnLength])
 
+	const handleChange=(item:any)=>{
+		let current : string[]= checkedIds;
+		if(item.value==='000') {
+			if(current.length===newOption.length) {
+				current=[]
+			}else {
+				for(let i=0;i<newOption.length;i++) {
+					current = [
+						...current,
+						newOption[i].value
+					]
+				}
+			}
+		}else {
+			if(checkedIds.includes(item.value)) {
+				current = checkedIds.filter((data:string)=>data!==item.value)
+			}else {
+				current = [
+					...current,
+					item.value,
+				]
+			}
+		}
+		setChecked([...new Set(current)])
+		if(typeof onChange === "function") {
+			onChange(options.filter(opt => current.indexOf(opt.value) > -1))
+		}
+	}
+
 	return (
 		<div className="container">
 		<header>Status</header>
@@ -57,7 +87,8 @@ const MultiCheck: React.FunctionComponent<Props> = (props): JSX.Element => {
 				return <div className="columWrap" key={i}>
 					{innerArray.map((item:any,index:number)=>{
 					return <div key={item.label}>
-						<input type="checkbox"/>
+						<input type="checkbox" checked={checkedIds.includes(item.value)} 
+						value={item.value} onChange={()=>handleChange(item)}/>
 						<label className="checkbox-label">{item.label}</label>
 				 	</div>
 					})}
