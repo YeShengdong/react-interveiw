@@ -34,13 +34,14 @@ const MultiCheck: React.FunctionComponent<Props> = (props): JSX.Element => {
 	const [columnLength,setColumnLength] = useState(columns);
 	const [newOption,setOption] = useState(options);
 	const [list,setList] = useState<any[]>([])
-	const [checkedIds,setChecked] = useState<string[]>([])
+	const [checkedIds,setChecked] = useState<string[]>(values?values:[])
 
 	useEffect(()=>{
 		setColumnLength(Math.ceil((options.length+1)/columns))
 		let tempArr = [{label: 'select all', value: '000',},...options]
 		setOption(tempArr)
 	},[columns,options])
+
 
 	useEffect(()=>{
 			let res = [];
@@ -65,14 +66,29 @@ const MultiCheck: React.FunctionComponent<Props> = (props): JSX.Element => {
 			}
 		}else {
 			if(checkedIds.includes(item.value)) {
-				current = checkedIds.filter((data:string)=>data!==item.value)
+				if(current.length===newOption.length) {
+					// unchecked last value cancel select all option
+					current = checkedIds.filter((data:string)=>{ return data!='000'&&data!==item.value})
+				}else{
+					current = checkedIds.filter((data:string)=>data!=item.value)
+				}
 			}else {
-				current = [
-					...current,
-					item.value,
-				]
+				if(current.length===newOption.length-2) {
+					// checked last value add select all option
+					current = [
+						...current,
+						item.value,
+						'000'
+					]
+				}else {
+					current = [
+						...current,
+						item.value,
+					]
+				}
 			}
 		}
+	
 		setChecked([...new Set(current)])
 		if(typeof onChange === "function") {
 			onChange(options.filter(opt => current.indexOf(opt.value) > -1))
